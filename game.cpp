@@ -13,6 +13,8 @@ void Game::loadSettings()
     myPhoneSux = settings.value("phonesux").toInt();
     playerID = settings.value("id").toInt();
 
+    if (highScore == 0) tiltOn = false;
+
     QString tmpName = settings.value("name").toString();
     //playerName = settings.value("name").toString();
 }
@@ -256,7 +258,6 @@ void Game::update(int lag)
         if (obstacles[i].A == jump && intersect(Box(player, 1, 1, &scheme), obstacles[i]))
         {
             player.playerFall = max(-100, (-80 * speed)/20);
-            qDebug() << "lel";
         }
         if (obstacles[i].A == crash && !obstacles[i].falling)
             obstacles[i].H = min(obstacles[i].H+55, CUBE_SIZE*10);
@@ -339,7 +340,8 @@ void Game::addObstacle()
             O.H = 1000 + rand()%2000;
             O.root.Z = player.Z + CUBE_SIZE*4;
         }
-        else {
+        else
+        {
             shake = false;
             quakeIntensity--;
         }
@@ -410,7 +412,7 @@ void Game::start()
     //obstacles.push_back(Box(Point(player.X + 1000000, player.Y, player.Z + 1000000), 1000000-500, 1000000, &scheme));
 }
 
-Game::Game() : paused(true), speed(0), direction(0), autoSteering(0), highScore(0), snowOn(false), tiltOn(true), particlesOn(true), myPhoneSux(0), vibe(0), playerID(0), scoreToSubmit(0)
+Game::Game() : paused(true), speed(0), direction(0), autoSteering(0), highScore(0), snowOn(false), tiltOn(false), particlesOn(true), myPhoneSux(0), vibe(0), playerID(0), scoreToSubmit(0)
 {
     reflectionsOn = true;
     coresOn = true;
