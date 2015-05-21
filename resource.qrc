@@ -1,0 +1,15 @@
+<RCC>
+    <qresource prefix="/fonts">
+        <file alias="Caitlin.ttf">fonts/Caitlin.ttf</file>
+        <file alias="FaceYourFears.ttf">fonts/FaceYourFears.ttf</file>
+        <file alias="Origami.ttf">fonts/Origami.ttf</file>
+        <file alias="SecretCode.ttf">fonts/SecretCode.TTF</file>
+        <file alias="Roboto-Regular.ttf">fonts/Roboto-Regular.ttf</file>
+        <file alias="Maxi.ttf">fonts/Maxi.TTF</file>
+        <file alias="New-Republic.ttf">fonts/SF New Republic.ttf</file>
+    </qresource>
+    <qresource prefix="/sounds"/>
+    <qresource prefix="/">
+        <file alias="main.qml">main.qml</file>
+    </qresource>
+</RCC>
