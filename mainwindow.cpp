@@ -125,6 +125,8 @@ MainWindow::MainWindow(Game *g, QWindow* parent) : device(), initialized(false),
     if (myPhoneSux > 4) gradientOn = false;
 
     appStates[0] = appStates[1] = 0;
+
+    keyLeftDown = keyRightDown = false;
 }
 
 #define PREPP(X) fixPoint(this->size(), transformPoint(&game->player, (X)))
@@ -143,7 +145,7 @@ void MainWindow::drawLine(Point P, Point Q, QPen pen, qreal width)
 void MainWindow::drawGround()
 {
 
-    for(int x = ((game->player.X-CUBE_SIZE*2)/100)*100; x <= game->player.X+CUBE_SIZE*2; x += 100)
+    for(int x = ((game->player.X-CUBE_SIZE*2)/100)*99; x <= game->player.X+CUBE_SIZE*2; x += 100)
     {
         drawLine(Point(x, 0, game->player.Z), Point(x, 0, game->player.Z+CUBE_SIZE+game->player.Y*10), QPen(game->scheme.groundLine), 1.f -  qreal(abs(x - game->player.X)) / qreal(CUBE_SIZE*2));
     }
@@ -373,12 +375,12 @@ void MainWindow::paint()
     appStates[1] = app->applicationState();
     //qDebug() << app->applicationState();
 
-    if (game->vibe)
+    /*if (game->vibe)RESTORE
     {
         qDebug() << "jest super";
-        //QAndroidJniObject::callStaticMethod<void>("org/qtproject/example/speeding/Vibrate", "start", "(I)V", abs(game->speed+game->speed));
+        QAndroidJniObject::callStaticMethod<void>("org/qtproject/example/speeding/Vibrate", "start", "(I)V", abs(game->speed+game->speed));
         game->vibe = false;
-    }
+    }*/
 
     if (appStates[0] == 4 && appStates[1] != 4) game->paused = true;
 
@@ -412,6 +414,7 @@ void MainWindow::paint()
         if (SIZE >= 1000) myPhoneSux = 0;
         game->myPhoneSux = myPhoneSux;
         game->saveSettings();
+        //game->tiltOn = true;
     }
 
     if (game->tiltOn)
@@ -440,6 +443,27 @@ void MainWindow::paint()
     else
     {
         game->player.tilt = float(game->tilt)/30.f;
+
+        if (keyRightDown)
+        {
+            touchHistory.push_back(9.f);
+            touchSum += 9.f;
+        }
+        else if (keyLeftDown)
+        {
+            touchHistory.push_back(-9.f);
+            touchSum -= 9.f;
+        }
+        else
+        {
+            touchHistory.push_back(0.f);
+        }
+        while (int(touchHistory.size()) > 50-game->speed/2)
+        {
+            touchSum -= touchHistory.front();
+            touchHistory.pop_front();
+        }
+        game->direction = touchSum/float(50-game->speed/2);
     }
 
     //game->update((last_fps == 0 ? 1: 64 / last_fps));
@@ -618,8 +642,8 @@ void MainWindow::keyPressEvent(QKeyEvent *e)
     }
     if (!game->paused)
     {
-        if (!game->tiltOn && e->key() == Qt::Key_Left && !game->autoSteering) game->direction = -9;
-        if (!game->tiltOn && e->key() == Qt::Key_Right && !game->autoSteering) game->direction = 9;
+        if (!game->tiltOn && e->key() == Qt::Key_Left && !game->autoSteering) keyLeftDown = true;
+        if (!game->tiltOn && e->key() == Qt::Key_Right && !game->autoSteering) keyRightDown = true;
     }
     if (e->key() == Qt::Key_F) showFPS ^= 1;
     if (e->key() == Qt::Key_A) game->autoSteering ^= 1;
@@ -629,8 +653,8 @@ void MainWindow::keyPressEvent(QKeyEvent *e)
 void MainWindow::keyReleaseEvent(QKeyEvent *e)
 {
 
-    if (!game->tiltOn && e->key() == Qt::Key_Left && !game->autoSteering) game->direction = 0;
-    if (!game->tiltOn && e->key() == Qt::Key_Right && !game->autoSteering) game->direction = 0;
+    if (!game->tiltOn && e->key() == Qt::Key_Left && !game->autoSteering) keyLeftDown = keyRightDown = false;
+    if (!game->tiltOn && e->key() == Qt::Key_Right && !game->autoSteering) keyLeftDown = keyRightDown = false;
 
 }
 
@@ -692,8 +716,8 @@ void MainWindow::mousePressEvent(QMouseEvent *e)
     }
     else if (!game->tiltOn)
     {
-        if (e->x() > this->size().width()/2) game->direction = 9;
-        else game->direction = -9;
+        if (e->x() > this->size().width()/2) keyLeftDown = true;
+        else keyRightDown = true;
     }
 }
 
@@ -705,7 +729,7 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *)
     }
     else
     {
-        game->direction = 0;
+       keyLeftDown = keyRightDown = false;
     }
 }
 

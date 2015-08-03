@@ -225,7 +225,7 @@ void Game::update(int lag)
     if (shake)
     {
         if (int(tilts.size()) == 8) tilts.erase(tilts.begin());
-        tilts.push_back(-2.f+float(rand()%2000)/500.f);
+        tilts.push_back(-4.f+float(rand()%4000)/500.f);
         player.tilt += ariMean(&tilts);
         if (int(xsh.size()) == 8) xsh.erase(xsh.begin());
         xsh.push_back(-quakeIntensity+rand()%(2*quakeIntensity));
@@ -240,8 +240,8 @@ void Game::update(int lag)
 
     if (autoSteering) autoSteer();
 
-    player.Z+=speed*lag;
-    player.X+=direction*lag-tilt/20;
+    player.Z += speed*lag;
+    player.X += direction*lag-tilt/20;
 
     player.playerFall++;
     player.Y = max(CUBE_SIZE/5, player.Y - player.playerFall);
@@ -360,10 +360,10 @@ void Game::addObstacle()
         O.angle = 0;
     }
 
-    if (lives < 3 && rand()%19 == 0)
+    if (lives < 3 && rand()%13 == 0)
     {
         O.A = heal;
-        O.W = 40;
+        O.W = 70;
         O.H = 1000;
         O.angle = 0;
     }

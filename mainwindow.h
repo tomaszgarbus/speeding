@@ -25,7 +25,7 @@
 #include <QLineEdit>
 #include <QQuickView>
 
-//#include <QtAndroidExtras/QAndroidJniObject>
+//#include <QtAndroidExtras/QAndroidJniObject>RESTORE
 
 #include <QOpenGLContext>
 #include <QOpenGLFunctions>
@@ -74,8 +74,8 @@ class MainWindow : public QWindow, public QOpenGLFunctions
 
     int myPhoneSux;
 
-    list<qreal> tiltHistory;
-    qreal tiltSum;
+    list<qreal> tiltHistory, touchHistory;
+    qreal tiltSum, touchSum;
 
     void exposeEvent(QExposeEvent *);
     void resizeEvent(QResizeEvent *);
@@ -103,6 +103,8 @@ class MainWindow : public QWindow, public QOpenGLFunctions
     int newsFall(int);
 
     int appStates[2];
+
+    bool keyLeftDown, keyRightDown;
 
 private slots:
     void sec();

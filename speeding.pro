@@ -1,4 +1,4 @@
-QT       += core gui opengl multimedia sensors testlib network quick
+QT       += core gui opengl multimedia sensors testlib network quick #androidextras
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = speeding
