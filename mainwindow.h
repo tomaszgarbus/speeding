@@ -25,7 +25,7 @@
 #include <QLineEdit>
 #include <QQuickView>
 
-//#include <QtAndroidExtras/QAndroidJniObject>RESTORE
+#include <QtAndroidExtras/QAndroidJniObject>
 
 #include <QOpenGLContext>
 #include <QOpenGLFunctions>

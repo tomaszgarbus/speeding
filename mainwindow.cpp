@@ -375,12 +375,12 @@ void MainWindow::paint()
     appStates[1] = app->applicationState();
     //qDebug() << app->applicationState();
 
-    /*if (game->vibe)RESTORE
+    if (game->vibe)
     {
         qDebug() << "jest super";
         QAndroidJniObject::callStaticMethod<void>("org/qtproject/example/speeding/Vibrate", "start", "(I)V", abs(game->speed+game->speed));
         game->vibe = false;
-    }*/
+    }
 
     if (appStates[0] == 4 && appStates[1] != 4) game->paused = true;
 
@@ -414,7 +414,7 @@ void MainWindow::paint()
         if (SIZE >= 1000) myPhoneSux = 0;
         game->myPhoneSux = myPhoneSux;
         game->saveSettings();
-        //game->tiltOn = true;
+        game->tiltOn = true;
     }
 
     if (game->tiltOn)
@@ -716,8 +716,8 @@ void MainWindow::mousePressEvent(QMouseEvent *e)
     }
     else if (!game->tiltOn)
     {
-        if (e->x() > this->size().width()/2) keyLeftDown = true;
-        else keyRightDown = true;
+        if (e->x() > this->size().width()/2) keyRightDown = true;
+        else keyLeftDown = true;
     }
 }
 
