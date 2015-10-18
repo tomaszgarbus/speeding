@@ -1,4 +1,2 @@
 # speeding
-Simple pseudo-3D game created in QtCreator
-Link to download:
-https://play.google.com/store/apps/details?id=org.qtproject.example.speeding
+[![ScreenShot](http://img.youtube.com/vi/Cy5D7VebJm4/0.jpg)](https://www.youtube.com/watch?v=Cy5D7VebJm4)
